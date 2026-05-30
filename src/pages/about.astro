@@ -2,16 +2,20 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="关于我 · Matt">
-  <h1 style="font-size:28px;margin-bottom:8px;">关于我</h1>
-  <p style="color:var(--text-secondary);margin-bottom:40px;">4 年欧莱雅集团经验，专注电商推广、零售运营与 AI 提效</p>
+<BaseLayout title="关于 · Matt">
+  <section style="padding:20px 0 40px;position:relative;">
+    <div class="hero-num" style="position:absolute;top:-40px;right:0;">02</div>
+    <p style="font-family:var(--serif);font-size:14px;color:var(--accent);letter-spacing:0.08em;margin-bottom:12px;">About</p>
+    <h1 style="font-family:var(--serif);font-size:44px;font-weight:900;line-height:1.2;margin-bottom:12px;">关于我</h1>
+    <p style="color:var(--text-muted);font-size:16px;">4 年欧莱雅集团经验，专注电商推广、零售运营与 AI 提效</p>
+  </section>
 
-  <section style="margin-bottom:40px;">
-    <h2 style="font-size:18px;margin-bottom:12px;color:var(--accent);">技能栈</h2>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+  <section style="margin-bottom:48px;">
+    <p style="font-family:var(--serif);font-size:13px;color:var(--accent);letter-spacing:0.08em;margin-bottom:14px;">技能</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <span class="tag">天猫推广</span>
       <span class="tag">抖音运营</span>
-      <span class="tag">千川/UD/万象台</span>
+      <span class="tag">千川 / UD / 万象台</span>
       <span class="tag">淘客渠道管理</span>
       <span class="tag">数据看板搭建</span>
       <span class="tag">自动化提效</span>
@@ -20,39 +24,47 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section style="margin-bottom:40px;">
-    <h2 style="font-size:18px;margin-bottom:16px;color:var(--accent);">职业经历 · 欧莱雅百库</h2>
+  <section style="margin-bottom:48px;">
+    <p style="font-family:var(--serif);font-size:13px;color:var(--accent);letter-spacing:0.08em;margin-bottom:20px;">职业经历 · 欧莱雅百库</p>
     <div class="timeline">
 
       <div class="timeline-item">
-        <div class="date">2025.9 — 2026.4</div>
-        <h4>碧欧泉 · 天猫渠道零售</h4>
-        <p>负责碧欧泉天猫旗舰店日常运营与大促策略制定，统筹各职能板块。主导会员体验优化项目（主页男女客差异化呈现、入会权益优化、客服话术调整、品线展示调整、文案利他性优化、礼盒客诉应对、问大家点位优化），并搭建促销核对、素材下单、店铺日报等自动化工具。</p>
+        <div class="date">2025.09 — 2026.04</div>
+        <div>
+          <h4>碧欧泉 · 天猫渠道零售</h4>
+          <p>负责天猫旗舰店日常运营与大促策略制定，统筹各职能板块。主导会员体验优化（男女客差异化呈现、入会权益优化、客服话术调整、品线展示优化、文案利他性调整、礼盒客诉应对、问大家点位优化），搭建促销核对、素材下单、店铺日报等自动化工具。</p>
+        </div>
       </div>
 
       <div class="timeline-item">
-        <div class="date">2025.3 — 2025.9</div>
-        <h4>集团淘客拓展</h4>
-        <p>负责全渠道团长资源拓展，覆盖团长拉新、品牌匹配、货品匹配、团长赛马等环节。主导品牌团长需求库搭建与团长效能看板搭建（首创团长加权评分机制），同步储备集团 to B 渠道资源。</p>
+        <div class="date">2025.03 — 2025.09</div>
+        <div>
+          <h4>集团淘客拓展</h4>
+          <p>负责全渠道团长资源拓展——团长拉新、品牌匹配、货品匹配、团长赛马。主导品牌团长需求库搭建与团长效能看板（首创团长加权评分机制），同步储备集团 to B 渠道资源。</p>
+        </div>
       </div>
 
       <div class="timeline-item">
-        <div class="date">2024.7 — 2025.3</div>
-        <h4>理肤泉 · 抖音渠道推广</h4>
-        <p>从 0 到 1 完成理肤泉抖音旗舰店与海外旗舰店开店及推广基础搭建。前期完成行业与竞品洞察以指导推广动作，撰写抖音推广工具白皮书（涵盖工具测试、直播间配合、品线打法、人群效果），搭建自动化业务看板（QBI），主导推广工具从标准到全域的转型。</p>
+        <div class="date">2024.07 — 2025.03</div>
+        <div>
+          <h4>理肤泉 · 抖音渠道推广</h4>
+          <p>从 0 到 1 完成抖音旗舰店与海外旗舰店开店及推广搭建。完成行业与竞品洞察指导推广动作，撰写抖音推广工具白皮书（工具测试、直播间配合、品线打法、人群效果），搭建自动化业务看板（QBI），主导推广工具从标准到全域转型。</p>
+        </div>
       </div>
 
       <div class="timeline-item">
-        <div class="date">2022 — 2024.7</div>
-        <h4>理肤泉 · 天猫渠道推广</h4>
-        <p>主导推广工具转型与淘客业务标准建设：撰写淘客业务白皮书并主导新人培训课程，组织欧莱雅集团全渠道淘客见面大会以统一团长渠道信息汇总维度，搭建淘客生意全集团 QBI 看板。</p>
+        <div class="date">2022 — 2024.07</div>
+        <div>
+          <h4>理肤泉 · 天猫渠道推广</h4>
+          <p>主导推广工具转型与淘客业务标准建设：撰写淘客业务白皮书并主导新人培训课程，组织集团全渠道淘客见面大会统一团长渠道信息汇总维度，搭建淘客生意全集团 QBI 看板。</p>
+        </div>
       </div>
 
     </div>
   </section>
 
   <section>
-    <h2 style="font-size:18px;margin-bottom:12px;color:var(--accent);">联系方式</h2>
-    <p style="color:var(--text-secondary);">📧 441315867@qq.com · 📍 广州</p>
+    <p style="font-family:var(--serif);font-size:13px;color:var(--accent);letter-spacing:0.08em;margin-bottom:14px;">联系</p>
+    <p style="color:var(--text-muted);">📧 441315867@qq.com · 📍 广州</p>
   </section>
 </BaseLayout>

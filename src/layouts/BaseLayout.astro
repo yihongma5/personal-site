@@ -6,7 +6,7 @@ export interface Props {
   description?: string;
 }
 
-const { title, description = "个人资料收藏与职业经历" } = Astro.props;
+const { title, description = "Matt · 个人主页" } = Astro.props;
 const base = "/personal-site/";
 ---
 
@@ -20,21 +20,21 @@ const base = "/personal-site/";
 </head>
 <body>
   <div class="container">
-    <header style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;margin-bottom:32px;">
-      <a href={base} style="font-size:20px;font-weight:700;color:var(--text);text-decoration:none;">🏠 个人主页</a>
+    <header style="display:flex;justify-content:space-between;align-items:center;padding:36px 0 60px;">
+      <a href={base} style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:0.03em;">Matt</a>
       <nav>
-        <a href={`${base}about`}>关于我</a>
-        <a href={`${base}portfolio`}>作品集</a>
-        <a href={`${base}bookmarks`}>资料收藏</a>
+        <a href={`${base}about`}>关于</a>
+        <a href={`${base}portfolio`}>作品</a>
+        <a href={`${base}bookmarks`}>收藏</a>
         <a href={`${base}blog`}>日志</a>
       </nav>
-      <button class="theme-toggle" id="themeToggle">🌙</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">暗</button>
     </header>
 
     <main><slot /></main>
 
     <footer>
-      <p>&copy; {new Date().getFullYear()} · 个人主页 · Powered by Astro</p>
+      <p>&copy; {new Date().getFullYear()} Matt · 广州</p>
     </footer>
   </div>
 
@@ -42,12 +42,12 @@ const base = "/personal-site/";
     const toggle = document.getElementById('themeToggle');
     const current = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', current);
-    toggle.textContent = current === 'dark' ? '☀️' : '🌙';
+    toggle.textContent = current === 'dark' ? '亮' : '暗';
     toggle.addEventListener('click', () => {
       const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
-      toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+      toggle.textContent = next === 'dark' ? '亮' : '暗';
     });
   </script>
 </body>
