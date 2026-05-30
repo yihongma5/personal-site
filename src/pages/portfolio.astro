@@ -1,10 +1,26 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = "/personal-site/";
 
 const projects = [
-  { title: "示例作品 1", tags: ["内容创作", "视频"], desc: "作品简述——做什么的、取得了什么结果。", url: "" },
-  { title: "示例作品 2", tags: ["跨境电商", "香水"], desc: "香水打版项目，从选品到供应链的全流程。", url: "" },
-  { title: "示例作品 3", tags: ["AI 提效", "自动化"], desc: "用 Claude Code 搭建的自动化工作流，提效 X 倍。", url: "" },
+  {
+    title: "淘客业务内部培训 —— 淘宝客扫盲",
+    tags: ["淘客", "培训", "新人课程"],
+    desc: "欧莱雅集团内部淘客新人培训资料，涵盖淘宝客基础概念、渠道运作逻辑、团长合作模式、常见术语与实操指南。面向推广团队及跨部门同事，统一集团淘客业务认知基线。",
+    pdf: `${base}taoke-training.pdf`,
+  },
+  {
+    title: "示例作品 2",
+    tags: ["跨境电商", "香水"],
+    desc: "香水打版项目，从选品到供应链的全流程。",
+    pdf: "",
+  },
+  {
+    title: "示例作品 3",
+    tags: ["AI 提效", "自动化"],
+    desc: "用 Claude Code 搭建的自动化工作流，提效 X 倍。",
+    pdf: "",
+  },
 ];
 ---
 
@@ -18,13 +34,26 @@ const projects = [
 
   <div>
     {projects.map((p) => (
-      <div class="card">
-        <h3>{p.title}</h3>
-        <p>{p.desc}</p>
-        <div style="margin-top:12px;">
-          {p.tags.map((t) => <span class="tag">{t}</span>)}
+      p.pdf ? (
+        <a href={p.pdf} target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+          <div class="card">
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+            <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;">
+              <div>{p.tags.map((t) => <span class="tag">{t}</span>)}</div>
+              <span style="font-family:var(--serif);font-size:12px;color:var(--accent);">📄 点击查看 PDF →</span>
+            </div>
+          </div>
+        </a>
+      ) : (
+        <div class="card">
+          <h3>{p.title}</h3>
+          <p>{p.desc}</p>
+          <div style="margin-top:12px;">
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
         </div>
-      </div>
+      )
     ))}
   </div>
 </BaseLayout>
