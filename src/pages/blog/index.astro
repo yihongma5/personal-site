@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = [
+  { title: "示例博文：第一篇文章", date: "2026-05-30", slug: "first-post", desc: "这是你的第一篇日志，可以写写为什么要做这个网站。" },
+];
+---
+
+<BaseLayout title="日志 · 个人主页">
+  <h1 style="font-size:28px;margin-bottom:32px;">📝 日志</h1>
+
+  {posts.map((post) => (
+    <a href={`/blog/${post.slug}`} style="text-decoration:none;color:inherit;">
+      <div class="card">
+        <h3>{post.title}</h3>
+        <p>{post.desc}</p>
+        <div class="date" style="margin-top:6px;">{post.date}</div>
+      </div>
+    </a>
+  ))}
+</BaseLayout>

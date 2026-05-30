@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// 后续改为从 content/projects/ 读取 Markdown
+const projects = [
+  { title: "示例作品 1", tags: ["内容创作", "视频"], desc: "作品简述——做什么的、取得了什么结果。", url: "" },
+  { title: "示例作品 2", tags: ["跨境电商", "香水"], desc: "香水打版项目，从选品到供应链的全流程。", url: "" },
+  { title: "示例作品 3", tags: ["AI 提效", "自动化"], desc: "用 Claude Code 搭建的自动化工作流，提效 X 倍。", url: "" },
+];
+---
+
+<BaseLayout title="作品集 · 个人主页">
+  <h1 style="font-size:28px;margin-bottom:32px;">📂 作品集</h1>
+
+  <div>
+    {projects.map((p) => (
+      <div class="card">
+        <h3>{p.title}</h3>
+        <p>{p.desc}</p>
+        <div style="margin-top:8px;">
+          {p.tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>

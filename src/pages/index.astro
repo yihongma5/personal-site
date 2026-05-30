@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="个人主页">
+  <section style="padding:60px 0 40px;">
+    <h1 style="font-size:36px;font-weight:800;margin-bottom:12px;">你好，我是 你的名字</h1>
+    <p style="font-size:18px;color:var(--text-secondary);max-width:600px;line-height:1.8;">
+      简短一句话介绍自己——做什么的、关注什么、在干什么。
+    </p>
+  </section>
+
+  <section style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px;">
+    <span class="tag">内容创作</span>
+    <span class="tag">跨境电商</span>
+    <span class="tag">AI 提效</span>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+    <a href="/about" style="text-decoration:none;color:inherit;">
+      <div class="card">
+        <h3>👤 关于我</h3>
+        <p>职业经历、技能栈、联系方式</p>
+      </div>
+    </a>
+    <a href="/portfolio" style="text-decoration:none;color:inherit;">
+      <div class="card">
+        <h3>📂 作品集</h3>
+        <p>内容创作案例与电商项目</p>
+      </div>
+    </a>
+    <a href="/bookmarks" style="text-decoration:none;color:inherit;">
+      <div class="card">
+        <h3>📑 资料收藏</h3>
+        <p>行业报告、工具清单、好文存档</p>
+      </div>
+    </a>
+    <a href="/blog" style="text-decoration:none;color:inherit;">
+      <div class="card">
+        <h3>📝 日志</h3>
+        <p>思考、复盘与日常记录</p>
+      </div>
+    </a>
+  </section>
+</BaseLayout>

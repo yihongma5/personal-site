@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="示例博文 · 个人主页">
+  <article style="max-width:680px;margin:0 auto;">
+    <h1 style="font-size:28px;margin-bottom:8px;">示例博文：第一篇文章</h1>
+    <div class="date" style="margin-bottom:32px;">2026-05-30</div>
+
+    <p style="line-height:1.9;margin-bottom:16px;color:var(--text-secondary);">
+      这是你的第一篇日志正文。在这里写你想写的内容。
+    </p>
+
+    <p style="line-height:1.9;margin-bottom:16px;color:var(--text-secondary);">
+      后面可以用 Markdown 格式来写，Astro 会自动渲染。
+    </p>
+
+    <a href="/blog" style="color:var(--accent);text-decoration:none;">← 返回日志列表</a>
+  </article>
+</BaseLayout>

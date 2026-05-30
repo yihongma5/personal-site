@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// 后续改为从 content/bookmarks/ 读取 Markdown
+const bookmarks = [
+  { category: "行业报告", items: [
+    { title: "2026 全球跨境电商趋势报告", url: "", desc: "XX 机构发布，涵盖欧美/东南亚市场。" },
+    { title: "AI 工具生产力报告 2026", url: "", desc: "调查了 5000+ 内容创作者使用 AI 工具的现状。" },
+  ]},
+  { category: "工具清单", items: [
+    { title: "Claude Code Skills 精选", url: "", desc: "个人常用 skill 清单与使用心得。" },
+    { title: "跨境电商工具箱", url: "", desc: "选品/物流/SEO/投放 全链条工具汇总。" },
+  ]},
+  { category: "好文存档", items: [
+    { title: "内容创作的底层逻辑", url: "", desc: "一篇关于内容方法论的长文笔记。" },
+  ]},
+];
+---
+
+<BaseLayout title="资料收藏 · 个人主页">
+  <h1 style="font-size:28px;margin-bottom:24px;">📑 资料收藏</h1>
+
+  <input class="search-input" type="text" id="search" placeholder="搜索收藏..." />
+
+  {bookmarks.map((group) => (
+    <section style="margin-bottom:32px;">
+      <h2 style="font-size:18px;color:var(--accent);margin-bottom:12px;">{group.category}</h2>
+      {group.items.map((item) => (
+        <div class="card">
+          <h3>{item.title}</h3>
+          <p>{item.desc}</p>
+        </div>
+      ))}
+    </section>
+  ))}
+
+  <script>
+    document.getElementById('search')?.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.card').forEach((card) => {
+        const text = card.textContent?.toLowerCase() || '';
+        (card.parentElement as HTMLElement).style.display = q === '' || text.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+</BaseLayout>

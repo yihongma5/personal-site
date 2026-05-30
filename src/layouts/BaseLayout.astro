@@ -1,0 +1,53 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "个人资料收藏与职业经历" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+</head>
+<body>
+  <div class="container">
+    <header style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;margin-bottom:32px;">
+      <a href="/" style="font-size:20px;font-weight:700;color:var(--text);text-decoration:none;">🏠 个人主页</a>
+      <nav>
+        <a href="/about">关于我</a>
+        <a href="/portfolio">作品集</a>
+        <a href="/bookmarks">资料收藏</a>
+        <a href="/blog">日志</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+    </header>
+
+    <main><slot /></main>
+
+    <footer>
+      <p>&copy; {new Date().getFullYear()} · 个人主页 · Powered by Astro</p>
+    </footer>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const current = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', current);
+    toggle.textContent = current === 'dark' ? '☀️' : '🌙';
+    toggle.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>

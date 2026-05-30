@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="关于我 · 个人主页">
+  <h1 style="font-size:28px;margin-bottom:32px;">👤 关于我</h1>
+
+  <section style="margin-bottom:40px;">
+    <h2 style="font-size:18px;margin-bottom:12px;color:var(--accent);">技能栈</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <span class="tag">内容创作</span>
+      <span class="tag">跨境电商</span>
+      <span class="tag">视频脚本</span>
+      <span class="tag">SEO</span>
+      <span class="tag">AI 提效</span>
+      <span class="tag">Claude Code</span>
+    </div>
+  </section>
+
+  <section style="margin-bottom:40px;">
+    <h2 style="font-size:18px;margin-bottom:16px;color:var(--accent);">职业经历</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="date">2024 - 至今</div>
+        <h4>待填写 · 公司名或项目名</h4>
+        <p>在这里描述你的角色和主要工作内容。例如：独立内容创作者，专注观点类视频，月播放量XX万。</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">2022 - 2024</div>
+        <h4>待填写 · 上一份经历</h4>
+        <p>描述上一段经历。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 style="font-size:18px;margin-bottom:12px;color:var(--accent);">联系方式</h2>
+    <p style="color:var(--text-secondary);">📧 email@example.com · 📍 所在城市</p>
+  </section>
+</BaseLayout>
