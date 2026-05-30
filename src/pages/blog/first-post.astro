@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
+const base = "/personal-site/";
 
 <BaseLayout title="示例博文 · 个人主页">
   <article style="max-width:680px;margin:0 auto;">
@@ -15,6 +16,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       后面可以用 Markdown 格式来写，Astro 会自动渲染。
     </p>
 
-    <a href="/blog" style="color:var(--accent);text-decoration:none;">← 返回日志列表</a>
+    <a href={`${base}blog" style="color:var(--accent);text-decoration:none;">← 返回日志列表</a>
   </article>
 </BaseLayout>

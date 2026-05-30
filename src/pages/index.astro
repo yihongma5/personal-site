@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = "/personal-site/";
 ---
 
 <BaseLayout title="Matt · 个人主页">
@@ -19,25 +20,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
-    <a href="/about" style="text-decoration:none;color:inherit;">
+    <a href={`${base}about`} style="text-decoration:none;color:inherit;">
       <div class="card">
         <h3>👤 关于我</h3>
         <p>欧莱雅集团 4 年营销与运营经历，从推广到零售全链路</p>
       </div>
     </a>
-    <a href="/portfolio" style="text-decoration:none;color:inherit;">
+    <a href={`${base}portfolio`} style="text-decoration:none;color:inherit;">
       <div class="card">
         <h3>📂 作品集</h3>
         <p>内容创作案例、电商项目与 AI 自动化工具</p>
       </div>
     </a>
-    <a href="/bookmarks" style="text-decoration:none;color:inherit;">
+    <a href={`${base}bookmarks`} style="text-decoration:none;color:inherit;">
       <div class="card">
         <h3>📑 资料收藏</h3>
         <p>行业报告、工具清单、好文存档</p>
       </div>
     </a>
-    <a href="/blog" style="text-decoration:none;color:inherit;">
+    <a href={`${base}blog`} style="text-decoration:none;color:inherit;">
       <div class="card">
         <h3>📝 日志</h3>
         <p>思考、复盘与日常记录</p>
