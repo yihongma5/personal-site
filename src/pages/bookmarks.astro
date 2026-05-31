@@ -1,18 +1,53 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = "/personal-site/";
 
 const bookmarks = [
-  { category: "行业报告", items: [
-    { title: "2026 全球跨境电商趋势报告", url: "", desc: "XX 机构发布，涵盖欧美/东南亚市场。" },
-    { title: "AI 工具生产力报告 2026", url: "", desc: "调查了 5000+ 内容创作者使用 AI 工具的现状。" },
-  ]},
-  { category: "工具清单", items: [
-    { title: "Claude Code Skills 精选", url: "", desc: "个人常用 skill 清单与使用心得。" },
-    { title: "跨境电商工具箱", url: "", desc: "选品/物流/SEO/投放 全链条工具汇总。" },
-  ]},
-  { category: "好文存档", items: [
-    { title: "内容创作的底层逻辑", url: "", desc: "一篇关于内容方法论的长文笔记。" },
-  ]},
+  {
+    category: "工具清单",
+    items: [
+      {
+        title: "🐜 蚂蚁日报 · Claude Code Skill",
+        url: "",
+        download: `${base}ant-news-daily.zip`,
+        desc: "每日自动抓取科技、国际、外贸三大领域新闻，AI 生成中文摘要 + 可视化 HTML 日报。基于 Claude Code 运行，发送「今日新闻」即可触发。下载 zip 后解压到 ~/.claude/skills/ 即可使用。",
+      },
+      {
+        title: "跨境电商工具箱",
+        url: "",
+        download: "",
+        desc: "选品/物流/SEO/投放 全链条工具汇总（待补充）。",
+      },
+    ],
+  },
+  {
+    category: "行业报告",
+    items: [
+      {
+        title: "2026 全球跨境电商趋势报告",
+        url: "",
+        download: "",
+        desc: "XX 机构发布，涵盖欧美/东南亚市场（待补充）。",
+      },
+      {
+        title: "AI 工具生产力报告 2026",
+        url: "",
+        download: "",
+        desc: "调查了 5000+ 内容创作者使用 AI 工具的现状（待补充）。",
+      },
+    ],
+  },
+  {
+    category: "好文存档",
+    items: [
+      {
+        title: "内容创作的底层逻辑",
+        url: "",
+        download: "",
+        desc: "一篇关于内容方法论的长文笔记（待补充）。",
+      },
+    ],
+  },
 ];
 ---
 
@@ -33,6 +68,10 @@ const bookmarks = [
         <div class="card">
           <h3>{item.title}</h3>
           <p>{item.desc}</p>
+          <div style="margin-top:10px;display:flex;gap:12px;">
+            {item.url && <a href={item.url} target="_blank" rel="noopener" style="font-family:var(--serif);font-size:12px;color:var(--accent);text-decoration:none;">🔗 查看原文 →</a>}
+            {item.download && <a href={item.download} style="font-family:var(--serif);font-size:12px;color:var(--accent);text-decoration:none;">📥 下载 ZIP →</a>}
+          </div>
         </div>
       ))}
     </section>
