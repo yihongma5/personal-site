@@ -1,10 +1,10 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 const base = "/personal-site/";
 
-const posts = [
-  { title: "示例博文：第一篇文章", date: "2026-05-30", slug: "first-post", desc: "这是你的第一篇日志。" },
-];
+const posts = (await getCollection("blog"))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 
 <BaseLayout title="日志 · Matt">
@@ -16,11 +16,11 @@ const posts = [
   </section>
 
   {posts.map((post) => (
-    <a href={`${base}blog/${post.slug}`} style="text-decoration:none;color:inherit;">
+    <a href={`${base}blog/${post.id}`} style="text-decoration:none;color:inherit;">
       <div class="card">
-        <p style="font-family:var(--serif);font-size:11px;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">{post.date}</p>
-        <h3>{post.title}</h3>
-        <p>{post.desc}</p>
+        <p style="font-family:var(--serif);font-size:11px;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">{post.data.date}</p>
+        <h3>{post.data.title}</h3>
+        {post.data.desc && <p>{post.data.desc}</p>}
       </div>
     </a>
   ))}
