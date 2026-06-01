@@ -15,64 +15,31 @@ const base = "/personal-site/";
       background: #faf7f2; color: #1a1815;
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
     }
-    .login-wrap {
-      text-align: center; max-width: 380px; width: 100%; padding: 0 24px;
-    }
-    .login-wrap h1 {
-      font-family: 'Noto Serif SC', 'STSong', serif; font-size: 28px;
-      font-weight: 700; margin-bottom: 6px;
-    }
+    .login-wrap { text-align: center; max-width: 380px; width: 100%; padding: 0 24px; }
+    .login-wrap h1 { font-family: 'Noto Serif SC', 'STSong', serif; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
     .login-wrap .sub { color: #8c8279; font-size: 14px; margin-bottom: 28px; }
-    .login-wrap input {
-      width: 100%; padding: 14px 18px; border: 1px solid #e8e2d9;
-      font-size: 16px; text-align: center; letter-spacing: 0.2em;
-      background: #fffefb; outline: none; transition: border-color .2s;
-    }
+    .login-wrap input { width: 100%; padding: 14px 18px; border: 1px solid #e8e2d9; font-size: 16px; text-align: center; letter-spacing: 0.2em; background: #fffefb; outline: none; transition: border-color .2s; }
     .login-wrap input:focus { border-color: #d4773d; }
     .login-wrap .err { color: #d4773d; font-size: 13px; margin-top: 10px; display:none; }
-
     .editor-wrap { display:none; width:100%; max-width:800px; padding:40px 24px; }
-    .editor-wrap .topbar {
-      display:flex; justify-content:space-between; align-items:center;
-      margin-bottom: 24px; padding-bottom: 16px; border-bottom:1px solid #e8e2d9;
-    }
-    .editor-wrap .topbar h2 {
-      font-family: 'Noto Serif SC', 'STSong', serif; font-size: 20px;
-    }
-    .topbar button {
-      background: none; border: 1px solid #e8e2d9; padding: 6px 16px;
-      font-size: 13px; cursor: pointer; color: #8c8279; transition: .2s;
-    }
+    .editor-wrap .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; padding-bottom: 16px; border-bottom:1px solid #e8e2d9; }
+    .editor-wrap .topbar h2 { font-family: 'Noto Serif SC', 'STSong', serif; font-size: 20px; }
+    .topbar button { background: none; border: 1px solid #e8e2d9; padding: 6px 16px; font-size: 13px; cursor: pointer; color: #8c8279; transition: .2s; }
     .topbar button:hover { border-color: #d4773d; color: #d4773d; }
     .field { margin-bottom: 16px; }
-    .field label {
-      display: block; font-size: 12px; color: #8c8279;
-      letter-spacing: 0.06em; margin-bottom: 6px; text-transform: uppercase;
-    }
-    .field input, .field textarea {
-      width: 100%; padding: 12px 16px; border: 1px solid #e8e2d9;
-      font-size: 15px; background: #fffefb; outline: none; line-height: 1.6;
-    }
+    .field label { display: block; font-size: 12px; color: #8c8279; letter-spacing: 0.06em; margin-bottom: 6px; text-transform: uppercase; }
+    .field input, .field textarea { width: 100%; padding: 12px 16px; border: 1px solid #e8e2d9; font-size: 15px; background: #fffefb; outline: none; line-height: 1.6; }
     .field input:focus, .field textarea:focus { border-color: #d4773d; }
     .field textarea { min-height: 320px; resize: vertical; font-family: inherit; }
-    .preview-box {
-      display:none; padding: 24px; border: 1px solid #e8e2d9; min-height: 200px;
-      line-height: 1.8; background: #fffefb; margin-bottom: 16px;
-    }
+    .preview-box { display:none; padding: 24px; border: 1px solid #e8e2d9; min-height: 200px; line-height: 1.8; background: #fffefb; margin-bottom: 16px; }
     .actions { display:flex; gap:10px; margin-top: 20px; }
-    .btn {
-      padding: 10px 24px; border: none; font-size: 14px; cursor: pointer;
-      letter-spacing: 0.04em; transition: .2s;
-    }
+    .btn { padding: 10px 24px; border: none; font-size: 14px; cursor: pointer; letter-spacing: 0.04em; transition: .2s; }
     .btn-primary { background: #d4773d; color: #fff; }
     .btn-primary:hover { background: #c06830; }
     .btn-ghost { background: none; border: 1px solid #e8e2d9; color: #8c8279; }
     .btn-ghost:hover { border-color: #d4773d; color: #d4773d; }
     .status { font-size:13px; margin-top:12px; min-height:20px; }
-    .status.ok { color:#059669; }
-    .status.err { color:#d4773d; }
-    .status.info { color:#8c8279; }
-
+    .status.ok { color:#059669; } .status.err { color:#d4773d; } .status.info { color:#8c8279; }
     .token-setup { display:none; margin-bottom:20px; padding:16px; border:1px solid #e8e2d9; background:#fffefb; }
     .token-setup p { font-size:13px; color:#8c8279; line-height:1.8; margin-bottom:10px; }
     .token-setup a { color:#d4773d; }
@@ -94,15 +61,15 @@ const base = "/personal-site/";
     <p>2. 拉到页面底部点「Generate token」</p>
     <p>3. 复制生成的 token，粘贴到下方：</p>
     <input type="text" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;padding:8px 12px;font-size:14px;border:1px solid #e8e2d9;margin-top:8px;" />
-    <button class="btn btn-primary" style="margin-top:10px;" onclick="saveToken()">保存 Token</button>
+    <button class="btn btn-primary" style="margin-top:10px;" id="saveTokenBtn">保存 Token</button>
     <p class="status" id="tokenStatus"></p>
   </div>
 
   <div class="topbar">
     <h2>写日志</h2>
     <div>
-      <button onclick="togglePreview()" id="previewBtn">预览</button>
-      <button onclick="location.reload()" style="margin-left:8px;">退出</button>
+      <button id="previewBtn">预览</button>
+      <button id="logoutBtn" style="margin-left:8px;">退出</button>
     </div>
   </div>
 
@@ -119,184 +86,149 @@ const base = "/personal-site/";
   <div class="preview-box" id="previewBox"></div>
 
   <div class="actions">
-    <button class="btn btn-primary" id="publishBtn" onclick="publish()">发布</button>
-    <button class="btn btn-ghost" onclick="saveDraft()">保存草稿</button>
+    <button class="btn btn-primary" id="publishBtn">发布</button>
+    <button class="btn btn-ghost" id="saveDraftBtn">保存草稿</button>
   </div>
   <p class="status" id="statusMsg"></p>
 </div>
 
-<script>
-const PASS_HASH = '50062a8a3f5b30879142c2f46b6e31839f8311a216206a7de6f8a2d7c6ed4bb2';
-const OWNER = 'yihongma5';
-const REPO = 'personal-site';
+<script is:inline>
+(function() {
+  var PASS_HASH = '50062a8a3f5b30879142c2f46b6e31839f8311a216206a7de6f8a2d7c6ed4bb2';
+  var OWNER = 'yihongma5';
+  var REPO = 'personal-site';
+  var previewOn = false;
 
-// ===== 登录 =====
-document.getElementById('pwdInput').addEventListener('keydown', async function(e) {
-  if (e.key !== 'Enter') return;
-  const hash = await sha256(this.value);
-  if (hash === PASS_HASH) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('editorScreen').style.display = 'block';
-    loadDraft();
-    if (!localStorage.getItem('gh_token')) {
-      document.getElementById('tokenSetup').style.display = 'block';
+  function sha256(msg, cb) {
+    crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg)).then(function(buf) {
+      cb(Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join(''));
+    });
+  }
+
+  // Login
+  document.getElementById('pwdInput').addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var self = this;
+    sha256(self.value, function(hash) {
+      if (hash === PASS_HASH) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('editorScreen').style.display = 'block';
+        loadDraft();
+        if (!localStorage.getItem('gh_token')) {
+          document.getElementById('tokenSetup').style.display = 'block';
+        }
+      } else {
+        document.getElementById('loginErr').style.display = 'block';
+        self.value = '';
+      }
+    });
+  });
+
+  // Token
+  document.getElementById('saveTokenBtn').addEventListener('click', function() {
+    var t = document.getElementById('tokenInput').value.trim();
+    if (!t) return;
+    localStorage.setItem('gh_token', t);
+    document.getElementById('tokenSetup').style.display = 'none';
+    setStatus('Token 已保存，可以开始发布了', 'ok');
+  });
+
+  // Draft
+  function saveDraft() {
+    var draft = { title: document.getElementById('titleInput').value, body: document.getElementById('bodyInput').value, savedAt: new Date().toISOString() };
+    localStorage.setItem('blog_draft', JSON.stringify(draft));
+    setStatus('草稿已保存', 'ok');
+  }
+  function loadDraft() {
+    var raw = localStorage.getItem('blog_draft');
+    if (!raw) return;
+    try { var d = JSON.parse(raw); if (d.title) document.getElementById('titleInput').value = d.title; if (d.body) document.getElementById('bodyInput').value = d.body; } catch(e) {}
+  }
+  document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
+  setInterval(function() {
+    var t = document.getElementById('titleInput').value, b = document.getElementById('bodyInput').value;
+    if (t || b) localStorage.setItem('blog_draft', JSON.stringify({title:t, body:b, savedAt:new Date().toISOString()}));
+  }, 10000);
+
+  // Preview
+  document.getElementById('previewBtn').addEventListener('click', function() {
+    previewOn = !previewOn;
+    var body = document.getElementById('bodyField');
+    var preview = document.getElementById('previewBox');
+    if (previewOn) {
+      body.style.display = 'none'; preview.style.display = 'block';
+      var md = document.getElementById('bodyInput').value;
+      preview.innerHTML = md.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\- (.+)$/gm,'<li>$1</li>').replace(/\n\n/g,'</p><p>').replace(/^(?!<[hpl])/gm,'<p>') + '</p>';
+      this.textContent = '编辑';
+    } else {
+      body.style.display = ''; preview.style.display = 'none';
+      this.textContent = '预览';
     }
-  } else {
-    document.getElementById('loginErr').style.display = 'block';
-    this.value = '';
-  }
-});
+  });
 
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
-}
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', function() { location.reload(); });
 
-// ===== Token =====
-function saveToken() {
-  var t = document.getElementById('tokenInput').value.trim();
-  if (!t) return;
-  localStorage.setItem('gh_token', t);
-  document.getElementById('tokenSetup').style.display = 'none';
-  setStatus('Token 已保存，可以开始发布了', 'ok');
-}
+  // Publish
+  document.getElementById('publishBtn').addEventListener('click', function() {
+    var title = document.getElementById('titleInput').value.trim();
+    var bodyText = document.getElementById('bodyInput').value.trim();
+    if (!title || !bodyText) { setStatus('标题和正文不能为空', 'err'); return; }
+    var token = localStorage.getItem('gh_token');
+    if (!token) { setStatus('请先设置 GitHub Token', 'err'); document.getElementById('tokenSetup').style.display='block'; return; }
 
-// ===== 草稿 =====
-function saveDraft() {
-  var draft = {
-    title: document.getElementById('titleInput').value,
-    body: document.getElementById('bodyInput').value,
-    savedAt: new Date().toISOString()
-  };
-  localStorage.setItem('blog_draft', JSON.stringify(draft));
-  setStatus('草稿已保存', 'ok');
-}
-function loadDraft() {
-  var raw = localStorage.getItem('blog_draft');
-  if (!raw) return;
-  try {
-    var draft = JSON.parse(raw);
-    if (draft.title) document.getElementById('titleInput').value = draft.title;
-    if (draft.body) document.getElementById('bodyInput').value = draft.body;
-  } catch(e) {}
-}
-setInterval(function() {
-  var t = document.getElementById('titleInput').value;
-  var b = document.getElementById('bodyInput').value;
-  if (t || b) {
-    localStorage.setItem('blog_draft', JSON.stringify({title:t, body:b, savedAt:new Date().toISOString()}));
-  }
-}, 10000);
+    var btn = this;
+    btn.disabled = true; btn.textContent = '发布中...';
+    setStatus('正在发布...', 'info');
 
-// ===== 预览 =====
-var previewOn = false;
-function togglePreview() {
-  previewOn = !previewOn;
-  var body = document.getElementById('bodyField');
-  var preview = document.getElementById('previewBox');
-  var btn = document.getElementById('previewBtn');
-  if (previewOn) {
-    body.style.display = 'none';
-    preview.style.display = 'block';
-    var md = document.getElementById('bodyInput').value;
-    preview.innerHTML = md
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/^\- (.+)$/gm, '<li>$1</li>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/^(?!<[hpl])/gm, '<p>') + '</p>';
-    btn.textContent = '编辑';
-  } else {
-    body.style.display = '';
-    preview.style.display = 'none';
-    btn.textContent = '预览';
-  }
-}
+    var now = new Date();
+    var dateStr = now.toISOString().split('T')[0];
+    var timeStr = now.toLocaleString('zh-CN', { hour12: false });
+    var slug = dateStr + '-' + title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0,40).toLowerCase();
+    var frontmatter = '---\ntitle: "' + title + '"\ndate: "' + dateStr + '"\ndesc: "' + bodyText.replace(/[#*\n]/g,' ').substring(0,80) + '"\n---\n\n> 发布于 ' + timeStr + '\n\n' + bodyText;
+    var path = 'src/content/blog/' + slug + '.md';
 
-// ===== 发布 =====
-function publish() {
-  var title = document.getElementById('titleInput').value.trim();
-  var bodyText = document.getElementById('bodyInput').value.trim();
-  if (!title || !bodyText) { setStatus('标题和正文不能为空', 'err'); return; }
-
-  var token = localStorage.getItem('gh_token');
-  if (!token) {
-    setStatus('请先设置 GitHub Token', 'err');
-    document.getElementById('tokenSetup').style.display = 'block';
-    return;
-  }
-
-  var btn = document.getElementById('publishBtn');
-  btn.disabled = true;
-  btn.textContent = '发布中...';
-  setStatus('正在发布...', 'info');
-
-  var now = new Date();
-  var dateStr = now.toISOString().split('T')[0];
-  var timeStr = now.toLocaleString('zh-CN', { hour12: false });
-  var slug = dateStr + '-' + title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0, 40).toLowerCase();
-
-  var frontmatter = '---\ntitle: "' + title + '"\ndate: "' + dateStr + '"\ndesc: "' + bodyText.replace(/[#*\n]/g,' ').substring(0, 80) + '"\n---\n\n> 发布于 ' + timeStr + '\n\n' + bodyText;
-
-  var path = 'src/content/blog/' + slug + '.md';
-
-  // 1. Get latest commit
-  fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
-    headers: { Authorization: 'token ' + token }
-  }).then(function(r) {
-    if (!r.ok) throw new Error('Token 无效或网络错误 (HTTP ' + r.status + ')');
-    return r.json();
-  }).then(function(mainData) {
-    // 2. Create blob
-    return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/blobs', {
-      method: 'POST',
-      headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(frontmatter))), encoding: 'base64' })
-    }).then(function(r) { return r.json(); }).then(function(blobData) {
-      // 3. Create tree
-      return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees', {
-        method: 'POST',
-        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ base_tree: mainData.object.sha, tree: [{ path: path, mode: '100644', type: 'blob', sha: blobData.sha }] })
-      }).then(function(r) { return r.json(); }).then(function(treeData) {
-        // 4. Create commit
-        return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/commits', {
-          method: 'POST',
-          headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'blog: ' + title, tree: treeData.sha, parents: [mainData.object.sha] })
-        }).then(function(r) { return r.json(); }).then(function(commitData) {
-          // 5. Update ref
-          return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
-            method: 'PATCH',
-            headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sha: commitData.sha, force: false })
+    fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
+      headers: { Authorization: 'token ' + token }
+    }).then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(main) {
+      return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/blobs', {
+        method: 'POST', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
+        body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(frontmatter))), encoding:'base64' })
+      }).then(function(r) { return r.json(); }).then(function(blob) {
+        return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees', {
+          method: 'POST', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
+          body: JSON.stringify({ base_tree: main.object.sha, tree:[{ path:path, mode:'100644', type:'blob', sha:blob.sha }] })
+        }).then(function(r) { return r.json(); }).then(function(tree) {
+          return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/commits', {
+            method: 'POST', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
+            body: JSON.stringify({ message:'blog: ' + title, tree:tree.sha, parents:[main.object.sha] })
+          }).then(function(r) { return r.json(); }).then(function(commit) {
+            return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
+              method: 'PATCH', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
+              body: JSON.stringify({ sha:commit.sha, force:false })
+            });
           });
         });
       });
+    }).then(function() {
+      setStatus('已发布！约 1 分钟后在日志页可见', 'ok');
+      localStorage.removeItem('blog_draft');
+      document.getElementById('titleInput').value = '';
+      document.getElementById('bodyInput').value = '';
+      btn.disabled = false; btn.textContent = '发布';
+    }).catch(function(e) {
+      setStatus('发布失败: ' + e.message, 'err');
+      btn.disabled = false; btn.textContent = '发布';
     });
-  }).then(function() {
-    setStatus('已发布！约 1 分钟后在日志页可见', 'ok');
-    localStorage.removeItem('blog_draft');
-    document.getElementById('titleInput').value = '';
-    document.getElementById('bodyInput').value = '';
-    btn.disabled = false;
-    btn.textContent = '发布';
-  }).catch(function(e) {
-    setStatus('发布失败: ' + e.message, 'err');
-    btn.disabled = false;
-    btn.textContent = '发布';
-    console.error(e);
   });
-}
 
-function setStatus(msg, cls) {
-  var el = document.getElementById('statusMsg');
-  el.textContent = msg;
-  el.className = 'status ' + (cls || '');
-}
+  function setStatus(msg, cls) {
+    var el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = 'status ' + (cls || '');
+  }
+})();
 </script>
 </body>
 </html>
