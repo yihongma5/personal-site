@@ -38,11 +38,20 @@ const base = "/personal-site/";
     .btn-primary:hover { background: #c06830; }
     .btn-ghost { background: none; border: 1px solid #e8e2d9; color: #8c8279; }
     .btn-ghost:hover { border-color: #d4773d; color: #d4773d; }
+    .btn-danger { background: none; border: 1px solid #e8d2d9; color: #c44; font-size:12px; padding:4px 10px; cursor:pointer; transition:.2s; }
+    .btn-danger:hover { border-color: #c44; background:#fef5f5; }
     .status { font-size:13px; margin-top:12px; min-height:20px; }
     .status.ok { color:#059669; } .status.err { color:#d4773d; } .status.info { color:#8c8279; }
     .token-setup { display:none; margin-bottom:20px; padding:16px; border:1px solid #e8e2d9; background:#fffefb; }
     .token-setup p { font-size:13px; color:#8c8279; line-height:1.8; margin-bottom:10px; }
     .token-setup a { color:#d4773d; }
+
+    .post-list-wrap { margin-top:40px; padding-top:24px; border-top:1px solid #e8e2d9; }
+    .post-list-wrap h3 { font-family: 'Noto Serif SC','STSong',serif; font-size:16px; margin-bottom:14px; }
+    .post-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f0e8db; font-size:14px; }
+    .post-item .post-title { color:#1a1815; }
+    .post-item .post-date { color:#8c8279; font-size:12px; margin-left:12px; white-space:nowrap; }
+    .post-item .post-actions { display:flex; gap:8px; align-items:center; }
   </style>
 </head>
 <body>
@@ -90,6 +99,12 @@ const base = "/personal-site/";
     <button class="btn btn-ghost" id="saveDraftBtn">保存草稿</button>
   </div>
   <p class="status" id="statusMsg"></p>
+
+  <div class="post-list-wrap">
+    <h3>已发布日志</h3>
+    <p class="status" id="listStatus"></p>
+    <div id="postList"></div>
+  </div>
 </div>
 
 <script is:inline>
@@ -98,6 +113,14 @@ const base = "/personal-site/";
   var OWNER = 'yihongma5';
   var REPO = 'personal-site';
   var previewOn = false;
+
+  function api(path, opts) {
+    var token = localStorage.getItem('gh_token');
+    if (!token) return Promise.reject(new Error('未设置Token'));
+    var headers = { Authorization: 'token ' + token };
+    if (opts && opts.body) headers['Content-Type'] = 'application/json';
+    return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/' + path, Object.assign({ headers: headers }, opts || {}));
+  }
 
   function sha256(msg, cb) {
     crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg)).then(function(buf) {
@@ -114,6 +137,7 @@ const base = "/personal-site/";
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('editorScreen').style.display = 'block';
         loadDraft();
+        loadPostList();
         if (!localStorage.getItem('gh_token')) {
           document.getElementById('tokenSetup').style.display = 'block';
         }
@@ -174,8 +198,7 @@ const base = "/personal-site/";
     var title = document.getElementById('titleInput').value.trim();
     var bodyText = document.getElementById('bodyInput').value.trim();
     if (!title || !bodyText) { setStatus('标题和正文不能为空', 'err'); return; }
-    var token = localStorage.getItem('gh_token');
-    if (!token) { setStatus('请先设置 GitHub Token', 'err'); document.getElementById('tokenSetup').style.display='block'; return; }
+    if (!localStorage.getItem('gh_token')) { setStatus('请先设置 GitHub Token', 'err'); document.getElementById('tokenSetup').style.display='block'; return; }
 
     var btn = this;
     btn.disabled = true; btn.textContent = '发布中...';
@@ -188,40 +211,93 @@ const base = "/personal-site/";
     var frontmatter = '---\ntitle: "' + title + '"\ndate: "' + dateStr + '"\ndesc: "' + bodyText.replace(/[#*\n]/g,' ').substring(0,80) + '"\n---\n\n> 发布于 ' + timeStr + '\n\n' + bodyText;
     var path = 'src/content/blog/' + slug + '.md';
 
-    fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
-      headers: { Authorization: 'token ' + token }
-    }).then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    api('git/refs/heads/main').then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function(main) {
-      return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/blobs', {
-        method: 'POST', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
-        body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(frontmatter))), encoding:'base64' })
-      }).then(function(r) { return r.json(); }).then(function(blob) {
-        return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees', {
-          method: 'POST', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
-          body: JSON.stringify({ base_tree: main.object.sha, tree:[{ path:path, mode:'100644', type:'blob', sha:blob.sha }] })
-        }).then(function(r) { return r.json(); }).then(function(tree) {
-          return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/commits', {
-            method: 'POST', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
-            body: JSON.stringify({ message:'blog: ' + title, tree:tree.sha, parents:[main.object.sha] })
-          }).then(function(r) { return r.json(); }).then(function(commit) {
-            return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
-              method: 'PATCH', headers: { Authorization: 'token ' + token, 'Content-Type':'application/json' },
-              body: JSON.stringify({ sha:commit.sha, force:false })
+      return api('git/blobs', { method:'POST', body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(frontmatter))), encoding:'base64' }) })
+        .then(function(r) { return r.json(); }).then(function(blob) {
+          return api('git/trees', { method:'POST', body: JSON.stringify({ base_tree: main.object.sha, tree:[{ path:path, mode:'100644', type:'blob', sha:blob.sha }] }) })
+            .then(function(r) { return r.json(); }).then(function(tree) {
+              return api('git/commits', { method:'POST', body: JSON.stringify({ message:'blog: ' + title, tree:tree.sha, parents:[main.object.sha] }) })
+                .then(function(r) { return r.json(); }).then(function(commit) {
+                  return api('git/refs/heads/main', { method:'PATCH', body: JSON.stringify({ sha:commit.sha, force:false }) });
+                });
             });
-          });
         });
-      });
     }).then(function() {
       setStatus('已发布！约 1 分钟后在日志页可见', 'ok');
       localStorage.removeItem('blog_draft');
       document.getElementById('titleInput').value = '';
       document.getElementById('bodyInput').value = '';
       btn.disabled = false; btn.textContent = '发布';
+      loadPostList();
     }).catch(function(e) {
       setStatus('发布失败: ' + e.message, 'err');
       btn.disabled = false; btn.textContent = '发布';
     });
   });
+
+  // ===== 已发布列表 + 删除 =====
+  function loadPostList() {
+    var listEl = document.getElementById('postList');
+    var statusEl = document.getElementById('listStatus');
+    listEl.innerHTML = ''; statusEl.textContent = '加载中...'; statusEl.className = 'status info';
+
+    api('contents/src/content/blog').then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function(files) {
+      statusEl.textContent = '';
+      files.sort(function(a,b) { return a.name < b.name ? 1 : -1; });
+      files.forEach(function(f) {
+        var name = f.name.replace('.md','');
+        var parts = name.split('-');
+        var dateStr = parts.slice(0,3).join('-');
+        var titlePart = parts.slice(3).join('-');
+        var div = document.createElement('div');
+        div.className = 'post-item';
+        div.innerHTML = '<span><span class="post-title">' + titlePart + '</span><span class="post-date">' + dateStr + '</span></span>'
+          + '<span class="post-actions"><button class="btn-danger" data-path="' + f.path + '" data-sha="' + f.sha + '">删除</button></span>';
+        listEl.appendChild(div);
+      });
+
+      // 绑定删除按钮
+      listEl.querySelectorAll('.btn-danger').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (!confirm('确定删除「' + this.getAttribute('data-path') + '」？')) return;
+          deletePost(this.getAttribute('data-path'), this.getAttribute('data-sha'), this);
+        });
+      });
+
+      if (files.length === 0) {
+        listEl.innerHTML = '<p style="color:#8c8279;font-size:13px;">暂无已发布日志</p>';
+      }
+    }).catch(function(e) {
+      statusEl.textContent = '加载失败: ' + e.message;
+      statusEl.className = 'status err';
+    });
+  }
+
+  function deletePost(filePath, fileSha, btnEl) {
+    btnEl.disabled = true; btnEl.textContent = '删除中...';
+    api('git/refs/heads/main').then(function(r) { return r.json(); }).then(function(main) {
+      return api('git/trees', { method:'POST', body: JSON.stringify({
+        base_tree: main.object.sha,
+        tree: [{ path: filePath, mode:'100644', type:'blob', sha: null }]
+      }) }).then(function(r) { return r.json(); }).then(function(tree) {
+        return api('git/commits', { method:'POST', body: JSON.stringify({
+          message: 'blog: 删除 ' + filePath.replace('src/content/blog/',''),
+          tree: tree.sha, parents: [main.object.sha]
+        }) }).then(function(r) { return r.json(); }).then(function(commit) {
+          return api('git/refs/heads/main', { method:'PATCH', body: JSON.stringify({ sha:commit.sha, force:false }) });
+        });
+      });
+    }).then(function() {
+      loadPostList();
+    }).catch(function(e) {
+      alert('删除失败: ' + e.message);
+      btnEl.disabled = false; btnEl.textContent = '删除';
+    });
+  }
 
   function setStatus(msg, cls) {
     var el = document.getElementById('statusMsg');
