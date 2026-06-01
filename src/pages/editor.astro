@@ -15,7 +15,6 @@ const base = "/personal-site/";
       background: #faf7f2; color: #1a1815;
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
     }
-    /* ===== 登录 ===== */
     .login-wrap {
       text-align: center; max-width: 380px; width: 100%; padding: 0 24px;
     }
@@ -31,7 +30,7 @@ const base = "/personal-site/";
     }
     .login-wrap input:focus { border-color: #d4773d; }
     .login-wrap .err { color: #d4773d; font-size: 13px; margin-top: 10px; display:none; }
-    /* ===== 编辑器 ===== */
+
     .editor-wrap { display:none; width:100%; max-width:800px; padding:40px 24px; }
     .editor-wrap .topbar {
       display:flex; justify-content:space-between; align-items:center;
@@ -40,11 +39,11 @@ const base = "/personal-site/";
     .editor-wrap .topbar h2 {
       font-family: 'Noto Serif SC', 'STSong', serif; font-size: 20px;
     }
-    .editor-wrap .topbar button {
+    .topbar button {
       background: none; border: 1px solid #e8e2d9; padding: 6px 16px;
       font-size: 13px; cursor: pointer; color: #8c8279; transition: .2s;
     }
-    .editor-wrap .topbar button:hover { border-color: #d4773d; color: #d4773d; }
+    .topbar button:hover { border-color: #d4773d; color: #d4773d; }
     .field { margin-bottom: 16px; }
     .field label {
       display: block; font-size: 12px; color: #8c8279;
@@ -60,7 +59,6 @@ const base = "/personal-site/";
       display:none; padding: 24px; border: 1px solid #e8e2d9; min-height: 200px;
       line-height: 1.8; background: #fffefb; margin-bottom: 16px;
     }
-    .preview-box h1,.preview-box h2 { font-family: 'Noto Serif SC','STSong',serif; margin:16px 0 8px; }
     .actions { display:flex; gap:10px; margin-top: 20px; }
     .btn {
       padding: 10px 24px; border: none; font-size: 14px; cursor: pointer;
@@ -70,10 +68,11 @@ const base = "/personal-site/";
     .btn-primary:hover { background: #c06830; }
     .btn-ghost { background: none; border: 1px solid #e8e2d9; color: #8c8279; }
     .btn-ghost:hover { border-color: #d4773d; color: #d4773d; }
-    .status { font-size:13px; margin-top:12px; }
+    .status { font-size:13px; margin-top:12px; min-height:20px; }
     .status.ok { color:#059669; }
     .status.err { color:#d4773d; }
-    /* token setup */
+    .status.info { color:#8c8279; }
+
     .token-setup { display:none; margin-bottom:20px; padding:16px; border:1px solid #e8e2d9; background:#fffefb; }
     .token-setup p { font-size:13px; color:#8c8279; line-height:1.8; margin-bottom:10px; }
     .token-setup a { color:#d4773d; }
@@ -81,7 +80,6 @@ const base = "/personal-site/";
 </head>
 <body>
 
-<!-- ===== 登录 ===== -->
 <div class="login-wrap" id="loginScreen">
   <h1>编辑入口</h1>
   <p class="sub">输入密码以继续</p>
@@ -89,16 +87,15 @@ const base = "/personal-site/";
   <p class="err" id="loginErr">密码错误</p>
 </div>
 
-<!-- ===== 编辑器 ===== -->
 <div class="editor-wrap" id="editorScreen">
-  <!-- Token 设置 -->
   <div class="token-setup" id="tokenSetup">
     <p><strong>首次使用需要 GitHub Token</strong></p>
-    <p>1. 打开 <a href="https://github.com/settings/tokens/new?scopes=repo&description=blog-editor" target="_blank">GitHub Token 创建页</a></p>
-    <p>2. 点击底部的「Generate token」，复制生成的 token</p>
-    <p>3. 粘贴到下方：</p>
+    <p>1. 打开 <a href="https://github.com/settings/tokens/new?scopes=repo&description=blog-editor" target="_blank">GitHub Token 创建页</a>（已自动勾选 repo 权限）</p>
+    <p>2. 拉到页面底部点「Generate token」</p>
+    <p>3. 复制生成的 token，粘贴到下方：</p>
     <input type="text" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;padding:8px 12px;font-size:14px;border:1px solid #e8e2d9;margin-top:8px;" />
     <button class="btn btn-primary" style="margin-top:10px;" onclick="saveToken()">保存 Token</button>
+    <p class="status" id="tokenStatus"></p>
   </div>
 
   <div class="topbar">
@@ -122,56 +119,51 @@ const base = "/personal-site/";
   <div class="preview-box" id="previewBox"></div>
 
   <div class="actions">
-    <button class="btn btn-primary" onclick="publish()">发布</button>
+    <button class="btn btn-primary" id="publishBtn" onclick="publish()">发布</button>
     <button class="btn btn-ghost" onclick="saveDraft()">保存草稿</button>
   </div>
   <p class="status" id="statusMsg"></p>
 </div>
 
 <script>
-// 密码: SHA-256
-const PASS_HASH = '50062a8a3f5b30879142c2f46b6e31839f8311a216206a7de6f8a2d7c6ed4bb2'; // "password"
+const PASS_HASH = '50062a8a3f5b30879142c2f46b6e31839f8311a216206a7de6f8a2d7c6ed4bb2';
+const OWNER = 'yihongma5';
+const REPO = 'personal-site';
 
 // ===== 登录 =====
-const pwdInput = document.getElementById('pwdInput');
-pwdInput.addEventListener('keydown', async (e) => {
+document.getElementById('pwdInput').addEventListener('keydown', async function(e) {
   if (e.key !== 'Enter') return;
-  const hash = await sha256(pwdInput.value);
+  const hash = await sha256(this.value);
   if (hash === PASS_HASH) {
     document.getElementById('loginScreen').style.display = 'none';
-    const editor = document.getElementById('editorScreen');
-    editor.style.display = 'block';
+    document.getElementById('editorScreen').style.display = 'block';
     loadDraft();
-    checkToken();
+    if (!localStorage.getItem('gh_token')) {
+      document.getElementById('tokenSetup').style.display = 'block';
+    }
   } else {
     document.getElementById('loginErr').style.display = 'block';
-    pwdInput.value = '';
+    this.value = '';
   }
 });
 
 async function sha256(msg) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
 }
 
 // ===== Token =====
-function checkToken() {
-  const token = localStorage.getItem('gh_token');
-  if (!token) {
-    document.getElementById('tokenSetup').style.display = 'block';
-  }
-}
 function saveToken() {
-  const token = document.getElementById('tokenInput').value.trim();
-  if (!token) return;
-  localStorage.setItem('gh_token', token);
+  var t = document.getElementById('tokenInput').value.trim();
+  if (!t) return;
+  localStorage.setItem('gh_token', t);
   document.getElementById('tokenSetup').style.display = 'none';
-  setStatus('Token 已保存', 'ok');
+  setStatus('Token 已保存，可以开始发布了', 'ok');
 }
 
 // ===== 草稿 =====
 function saveDraft() {
-  const draft = {
+  var draft = {
     title: document.getElementById('titleInput').value,
     body: document.getElementById('bodyInput').value,
     savedAt: new Date().toISOString()
@@ -180,36 +172,42 @@ function saveDraft() {
   setStatus('草稿已保存', 'ok');
 }
 function loadDraft() {
-  const raw = localStorage.getItem('blog_draft');
+  var raw = localStorage.getItem('blog_draft');
   if (!raw) return;
   try {
-    const draft = JSON.parse(raw);
-    document.getElementById('titleInput').value = draft.title || '';
-    document.getElementById('bodyInput').value = draft.body || '';
+    var draft = JSON.parse(raw);
+    if (draft.title) document.getElementById('titleInput').value = draft.title;
+    if (draft.body) document.getElementById('bodyInput').value = draft.body;
   } catch(e) {}
 }
-// 自动保存
-setInterval(() => {
-  const t = document.getElementById('titleInput').value;
-  const b = document.getElementById('bodyInput').value;
+setInterval(function() {
+  var t = document.getElementById('titleInput').value;
+  var b = document.getElementById('bodyInput').value;
   if (t || b) {
-    localStorage.setItem('blog_draft', JSON.stringify({
-      title: t, body: b, savedAt: new Date().toISOString()
-    }));
+    localStorage.setItem('blog_draft', JSON.stringify({title:t, body:b, savedAt:new Date().toISOString()}));
   }
 }, 10000);
 
 // ===== 预览 =====
-let previewOn = false;
+var previewOn = false;
 function togglePreview() {
   previewOn = !previewOn;
-  const body = document.getElementById('bodyField');
-  const preview = document.getElementById('previewBox');
-  const btn = document.getElementById('previewBtn');
+  var body = document.getElementById('bodyField');
+  var preview = document.getElementById('previewBox');
+  var btn = document.getElementById('previewBtn');
   if (previewOn) {
     body.style.display = 'none';
     preview.style.display = 'block';
-    preview.innerHTML = parseMD(document.getElementById('bodyInput').value);
+    var md = document.getElementById('bodyInput').value;
+    preview.innerHTML = md
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/^\- (.+)$/gm, '<li>$1</li>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/^(?!<[hpl])/gm, '<p>') + '</p>';
     btn.textContent = '编辑';
   } else {
     body.style.display = '';
@@ -217,92 +215,87 @@ function togglePreview() {
     btn.textContent = '预览';
   }
 }
-function parseMD(text) {
-  return text
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^\- (.+)$/gm, '<li>$1</li>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^(?!<[hpl])/gm, '<p>')
-    + '</p>';
-}
 
 // ===== 发布 =====
-async function publish() {
-  const title = document.getElementById('titleInput').value.trim();
-  const body = document.getElementById('bodyInput').value.trim();
-  if (!title || !body) { setStatus('标题和正文不能为空', 'err'); return; }
+function publish() {
+  var title = document.getElementById('titleInput').value.trim();
+  var bodyText = document.getElementById('bodyInput').value.trim();
+  if (!title || !bodyText) { setStatus('标题和正文不能为空', 'err'); return; }
 
-  const token = localStorage.getItem('gh_token');
-  if (!token) { setStatus('请先设置 GitHub Token', 'err'); document.getElementById('tokenSetup').style.display='block'; return; }
+  var token = localStorage.getItem('gh_token');
+  if (!token) {
+    setStatus('请先设置 GitHub Token', 'err');
+    document.getElementById('tokenSetup').style.display = 'block';
+    return;
+  }
 
-  setStatus('发布中...', '');
+  var btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.textContent = '发布中...';
+  setStatus('正在发布...', 'info');
 
-  const now = new Date();
-  const dateStr = now.toISOString().split('T')[0];
-  const timeStr = now.toLocaleString('zh-CN', { hour12: false });
-  const slug = dateStr + '-' + title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0,40).toLowerCase();
+  var now = new Date();
+  var dateStr = now.toISOString().split('T')[0];
+  var timeStr = now.toLocaleString('zh-CN', { hour12: false });
+  var slug = dateStr + '-' + title.replace(/[^\w一-鿿]/g, '-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0, 40).toLowerCase();
 
-  const frontmatter = `---\ntitle: "${title}"\ndate: "${dateStr}"\ndesc: "${body.replace(/[#*\n]/g,' ').substring(0,80)}"\n---\n\n> 发布于 ${timeStr}\n\n${body}`;
+  var frontmatter = '---\ntitle: "' + title + '"\ndate: "' + dateStr + '"\ndesc: "' + bodyText.replace(/[#*\n]/g,' ').substring(0, 80) + '"\n---\n\n> 发布于 ' + timeStr + '\n\n' + bodyText;
 
-  const path = `src/content/blog/${slug}.md`;
-  const content = btoa(unescape(encodeURIComponent(frontmatter)));
+  var path = 'src/content/blog/' + slug + '.md';
 
-  try {
-    // Get latest commit SHA for main
-    const mainRes = await fetch('https://api.github.com/repos/yihongma5/personal-site/git/refs/heads/main', {
-      headers: { Authorization: `token ${token}` }
+  // 1. Get latest commit
+  fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
+    headers: { Authorization: 'token ' + token }
+  }).then(function(r) {
+    if (!r.ok) throw new Error('Token 无效或网络错误 (HTTP ' + r.status + ')');
+    return r.json();
+  }).then(function(mainData) {
+    // 2. Create blob
+    return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/blobs', {
+      method: 'POST',
+      headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: btoa(unescape(encodeURIComponent(frontmatter))), encoding: 'base64' })
+    }).then(function(r) { return r.json(); }).then(function(blobData) {
+      // 3. Create tree
+      return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees', {
+        method: 'POST',
+        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ base_tree: mainData.object.sha, tree: [{ path: path, mode: '100644', type: 'blob', sha: blobData.sha }] })
+      }).then(function(r) { return r.json(); }).then(function(treeData) {
+        // 4. Create commit
+        return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/commits', {
+          method: 'POST',
+          headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'blog: ' + title, tree: treeData.sha, parents: [mainData.object.sha] })
+        }).then(function(r) { return r.json(); }).then(function(commitData) {
+          // 5. Update ref
+          return fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/refs/heads/main', {
+            method: 'PATCH',
+            headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sha: commitData.sha, force: false })
+          });
+        });
+      });
     });
-    if (!mainRes.ok) throw new Error('API 请求失败，检查 Token 是否有效');
-    const mainData = await mainRes.json();
-    const baseSha = mainData.object.sha;
-
-    // Create blob
-    const blobRes = await fetch('https://api.github.com/repos/yihongma5/personal-site/git/blobs', {
-      method: 'POST', headers: { Authorization: `token ${token}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({ content, encoding:'base64' })
-    });
-    const blobData = await blobRes.json();
-
-    // Create tree
-    const treeRes = await fetch('https://api.github.com/repos/yihongma5/personal-site/git/trees', {
-      method: 'POST', headers: { Authorization: `token ${token}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({ base_tree: baseSha, tree: [{ path, mode:'100644', type:'blob', sha: blobData.sha }] })
-    });
-    const treeData = await treeRes.json();
-
-    // Create commit
-    const commitRes = await fetch('https://api.github.com/repos/yihongma5/personal-site/git/commits', {
-      method: 'POST', headers: { Authorization: `token ${token}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({
-        message: `blog: ${title}`,
-        tree: treeData.sha,
-        parents: [baseSha]
-      })
-    });
-    const commitData = await commitRes.json();
-
-    // Update ref
-    await fetch(`https://api.github.com/repos/yihongma5/personal-site/git/refs/heads/main`, {
-      method: 'PATCH', headers: { Authorization: `token ${token}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({ sha: commitData.sha, force: false })
-    });
-
+  }).then(function() {
     setStatus('已发布！约 1 分钟后在日志页可见', 'ok');
     localStorage.removeItem('blog_draft');
     document.getElementById('titleInput').value = '';
     document.getElementById('bodyInput').value = '';
-  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '发布';
+  }).catch(function(e) {
     setStatus('发布失败: ' + e.message, 'err');
-  }
+    btn.disabled = false;
+    btn.textContent = '发布';
+    console.error(e);
+  });
 }
 
 function setStatus(msg, cls) {
-  const el = document.getElementById('statusMsg');
-  el.textContent = msg; el.className = 'status ' + cls;
+  var el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  el.className = 'status ' + (cls || '');
 }
 </script>
 </body>
